@@ -21,7 +21,7 @@ then( () => {
 })
 
 app.get('/', function (req, res, next) {
-  res.send(layout('We got it working!!'));
+  res.redirect('/wiki');
 });
 
 app.use('/wiki', wikiRouter);

@@ -10,8 +10,12 @@ router.get('/add', (req, res, next) => {
   res.send(addPage());
 })
 
-router.post('/', (req, res, next) => {
-  res.send('something posted on the wiki page');
+router.post('/',  async (req, res, next) => {
+ const bodyContent = await req.body
+//  res.send(bodyContent);
+console.log(bodyContent.title)
+
+
 })
 
 module.exports = router;
