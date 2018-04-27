@@ -4,7 +4,7 @@ const morgan = require('morgan');
 const path = require('path');
 const app = express();
 const bodyParser = require('body-parser');
-const { db, Page, User } = require('./models');
+const {db, Page, User} = require('./models');
 const layout = require('./views/layout');
 
 app.use(morgan('dev'));
@@ -21,21 +21,19 @@ app.get('/', function (req, res, next) {
     res.send(layout('We got it working!!'));
 });
 
-Page.sync().then( () => {
-    return Page.create({
-      title: 'my first article',
-      slug: 'hsA',
-      content: 'sdnvoWDVNEWDk',
-      status: 'open'
-    })
-})
-  // await Page.sync();
-  // await User.syc();
+async function modelsSync(){
+  try {
+    await Page.sync({force: true});
+    await User.sync({force: true});
+  } catch (e){
+    console.log('An error happened:', e.message);
+  }
 
+  const PORT = process.env.PORT || 3000;
 
-const PORT = process.env.PORT || 3000
+  app.listen(PORT, function() {
+   console.log('Listeting in port 3000');
+  })
+}
 
-app.listen(PORT, function() {
- console.log('Listeting in port 3000');
-})
-
+modelsSync();
