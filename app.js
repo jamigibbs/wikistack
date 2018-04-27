@@ -1,4 +1,3 @@
-
 const express = require('express');
 const morgan = require('morgan');
 const path = require('path');
@@ -14,6 +13,9 @@ app.use(morgan('dev'));
 
 const staticMiddleware = express.static(path.join(__dirname, 'public'));
 app.use(staticMiddleware);
+
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json());
 
 db.authenticate().
 then( () => {
