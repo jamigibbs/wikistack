@@ -7,6 +7,9 @@ const bodyParser = require('body-parser');
 const {db, Page, User} = require('./models');
 const layout = require('./views/layout');
 
+const wikiRouter = require('./routes/wiki');
+const userRouter = require('./routes/user');
+
 app.use(morgan('dev'));
 
 const staticMiddleware = express.static(path.join(__dirname, 'public'));
@@ -18,8 +21,11 @@ then( () => {
 })
 
 app.get('/', function (req, res, next) {
-    res.send(layout('We got it working!!'));
+  res.send(layout('We got it working!!'));
 });
+
+app.use('/wiki', wikiRouter);
+app.use('/user', userRouter);
 
 async function modelsSync(){
   try {
