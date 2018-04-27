@@ -1,9 +1,10 @@
+
 const express = require('express');
 const morgan = require('morgan');
 const path = require('path');
 const app = express();
 const bodyParser = require('body-parser');
-const { db } = require('./models');
+const { db, Page, User } = require('./models');
 const layout = require('./views/layout');
 
 app.use(morgan('dev'));
@@ -20,7 +21,21 @@ app.get('/', function (req, res, next) {
     res.send(layout('We got it working!!'));
 });
 
-app.listen(5432, function() {
- console.log('Listeting in port 5432');
+Page.sync().then( () => {
+    return Page.create({
+      title: 'my first article',
+      slug: 'hsA',
+      content: 'sdnvoWDVNEWDk',
+      status: 'open'
+    })
+})
+  // await Page.sync();
+  // await User.syc();
+
+
+const PORT = process.env.PORT || 3000
+
+app.listen(PORT, function() {
+ console.log('Listeting in port 3000');
 })
 
