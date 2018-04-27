@@ -1,0 +1,26 @@
+{
+  "name": "wikistack",
+  "version": "1.0.0",
+  "description": "wikistack",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aurre/wikistack.git"
+  },
+  "author": "Raysa",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aurre/wikistack/issues"
+  },
+  "homepage": "https://github.com/aurre/wikistack#readme",
+  "dependencies": {
+    "express": "^4.16.3",
+    "morgan": "^1.9.0",
+    "pg": "^7.4.1",
+    "sequelize": "^4.37.6"
+  }
+}
