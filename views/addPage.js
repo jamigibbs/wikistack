@@ -1,5 +1,5 @@
-const html = require('html-template-tag')
-const layout = require('./layout')
+const html = require('html-template-tag');
+const layout = require('./layout');
 
 module.exports = () => layout(html`
   <h3>Add a Page</h3>
@@ -38,7 +38,7 @@ module.exports = () => layout(html`
       <label for="status" class="col-sm-2 control-label">Page Status</label>
       <div class="col-sm-10">
         <select name="status">
-          <option value="open">Open</option>
+          <option value="open" selected="selected">Open</option>
           <option value="closed">Close</option>
         </select>
       </div>
