@@ -28,8 +28,10 @@ function generateSlug (title) {
 }
 
 // Sequelize hook
-Page.beforeValidate((pageInstance, optionsObject) => {
-  pageInstance.slug = generateSlug(pageInstance.slug);
+Page.beforeValidate((page) => {
+  if (!page.slug){
+    page.slug = generateSlug(page.title);
+  }
 });
 
 const User = db.define('user', {
@@ -45,5 +47,7 @@ const User = db.define('user', {
     }
   }
 });
+
+Page.belongsTo(User, {as: 'author' });
 
 module.exports = { db, Page, User };

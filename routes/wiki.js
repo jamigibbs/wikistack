@@ -1,37 +1,56 @@
 const express = require('express');
 const router = express.Router();
-const { addPage } = require('../views');
-const { Page } = require('../models');
+const { addPage, main } = require('../views');
+const { Page, User } = require('../models');
+const wikiPageView = require('../views/wikipage');
 
-router.get('/', (req, res, next) => {
-  res.send('made it to wiki route')
+router.get('/', async (req, res, next) => {
+  try {
+    const pages = await Page.findAll();
+    res.send(main(pages));
+  } catch (err) {
+    next(err);
+  }
 });
 
 router.post('/',  async (req, res, next) => {
-  const bodyContent = await res.json(req.body);
+  const page = new Page(req.body);
 
-  const page = new Page({
-    title: bodyContent.req.body.title,
-    content: bodyContent.req.body.content,
-    slug: bodyContent.req.body.title,
-    status: bodyContent.req.body.status
-  });
-
-  // make sure we only redirect *after* our save is complete!
-  // note: `.save` returns a promise.
   try {
-    const newPost = await page.save();
+    const arr = await User.findOrCreate({
+      where: {
+        name: req.body.name,
+        email: req.body.email
+      }
+    });
 
-    console.log('Post Submitted: ', newPost.dataValues);
+    const user = arr[0]; // {id: 1, name: 'Cody', etc...}
+    const wasCreated = arr[1]; // bool
 
-    res.redirect('/');
-    res.end();
-  } catch (error) { next(error); }
-
+    await page.save();
+    page.setAuthor(user);
+    res.redirect(`/wiki/${page.slug}`);
+  } catch (err) { next(err); }
 });
 
 router.get('/add', (req, res, next) => {
   res.send(addPage());
+});
+
+router.get('/:slug', async (req, res, next) => {
+  try {
+    const page = await Page.findOne({
+      where: {
+        slug: req.params.slug
+      }
+    });
+    const author = await page.getAuthor();
+
+    res.send(wikiPageView(page, author));
+  } catch (err){
+    next(err);
+  }
+
 });
 
 module.exports = router;

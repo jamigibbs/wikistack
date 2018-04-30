@@ -27,14 +27,10 @@ app.get('/', function (req, res, next) {
 });
 
 app.use('/wiki', wikiRouter);
-app.use('/user', userRouter);
+app.use('/users', userRouter);
 
 async function init(){
-  try {
-    await models.db.sync({force: false});
-  } catch (e){
-    console.log('An error happened:', e.message);
-  }
+  await models.db.sync({force: false});
 
   const PORT = process.env.PORT || 3000;
 
